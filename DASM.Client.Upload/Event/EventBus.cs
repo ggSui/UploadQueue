@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace DASM.Client.Upload.Event
+namespace UploadQueue.Event
 {
     public class EventBus
     {
         public event EventHandler<ConsoleLogEventArgs> ConsoleLogEvent;
         public event EventHandler<AllUploadSuccessEventArgs> AllUploadSuccessEvent;
-        public event EventHandler<ProgressBarEventArgs> ProgressBarEvent;
+        public event EventHandler<ProgressBarMaxEventArgs> ProgressBarEvent;
         public event EventHandler<SuccessEventArgs> SuccessEvent;
         public event EventHandler<UploadSpeedEventArgs> UploadSpeedEvent;
 
@@ -40,11 +37,11 @@ namespace DASM.Client.Upload.Event
         }
 
         /// <summary>
-        /// 进度条更新
+        /// 队列添加数量通知
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        public virtual void OnProgressBar(object sender, ProgressBarEventArgs args)
+        public virtual void OnProgressBarMax(object sender, ProgressBarMaxEventArgs args)
         {
             if (ProgressBarEvent != null)
             {

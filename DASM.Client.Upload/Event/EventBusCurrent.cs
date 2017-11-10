@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DASM.Client.Upload.Event
+﻿namespace UploadQueue.Event
 {
-
     public static class EventBusCurrent
     {
+        private static object lock_obj = new object();
+        private static EventBus eventBus;
+
         /// <summary>
         /// 获取当前实例
         /// </summary>
@@ -15,7 +12,17 @@ namespace DASM.Client.Upload.Event
         {
             get
             {
-                return new EventBus();
+                if (eventBus == null)
+                {
+                    lock (lock_obj)
+                    {
+                        if (eventBus == null)
+                        {
+                            eventBus = new EventBus();
+                        }
+                    }
+                }
+                return eventBus;
             }
         }
     }

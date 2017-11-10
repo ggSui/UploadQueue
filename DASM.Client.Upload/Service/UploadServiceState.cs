@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DASM.Client.Upload.Service
+﻿namespace UploadQueue.Service
 {
     /// <summary>
     /// 上传服务状态

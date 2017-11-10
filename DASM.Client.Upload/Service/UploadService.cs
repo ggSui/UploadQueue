@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.Concurrent;
-using DASM.Client.Upload.Event;
 using System.Threading;
+using UploadQueue.Event;
 
-namespace DASM.Client.Upload.Service
+namespace UploadQueue.Service
 {
     /// <summary>
     /// 上传服务
     /// </summary>
-    public class UploadService : IService
+    public class UploadService : IUploadService
     {
         private Thread thread = null;
 
@@ -24,7 +21,7 @@ namespace DASM.Client.Upload.Service
         /// <summary>
         /// 上传队列
         /// </summary>
-        public PhotoUploadController UploadController { get; private set; }
+        private PhotoUploadController uploadController;
 
         /// <summary>
         /// 事件总栈
@@ -37,8 +34,7 @@ namespace DASM.Client.Upload.Service
         {
             this.EventBus = eventBus;
             this.uploadPhotoHandler = uploadPhotoHandler;
-            this.UploadController = new PhotoUploadController();
-
+            this.uploadController = new PhotoUploadController();
             StartThread();
         }
 
@@ -55,7 +51,7 @@ namespace DASM.Client.Upload.Service
         /// 开启服务
         /// </summary>
         /// <returns></returns>
-        public bool StartService()
+        public bool Start()
         {
             state = UploadServiceState.已启动;
             manualResetEvent.Set();
@@ -66,7 +62,7 @@ namespace DASM.Client.Upload.Service
         /// 停止服务
         /// </summary>
         /// <returns></returns>
-        public bool StopService()
+        public bool Stop()
         {
             state = UploadServiceState.已停止;
             this.manualResetEvent.Reset();
@@ -83,7 +79,7 @@ namespace DASM.Client.Upload.Service
                 IsBackground = true,
                 Name = "UploadPhoto" + DateTime.Now.ToLongDateString()
             };
-            StopService();
+            Stop();
         }
 
         /// <summary>
@@ -96,10 +92,10 @@ namespace DASM.Client.Upload.Service
                 try
                 {
                     manualResetEvent.WaitOne();
-                    PhotoUpload photoUpload = this.UploadController.GetNextUpload();
+                    PhotoUpload photoUpload = this.uploadController.GetNextUpload();
                     if (photoUpload != null)
                     {
-                        uploadPhotoHandler.Execute(photoUpload, this.EventBus);
+                        uploadPhotoHandler.Execute(photoUpload, EventBus);
                     }
                     else
                     {
@@ -109,9 +105,50 @@ namespace DASM.Client.Upload.Service
                 }
                 catch (Exception ex)
                 {
-                    EventBus.OnConsoleLog(this, new ConsoleLogEventArgs() { log = ex.Message });
+                    EventBus.OnConsoleLog(this, new ConsoleLogEventArgs(ex.Message));
                 }
             }
+        }
+
+        /// <summary>
+        /// 退出服务
+        /// </summary>
+        public void Exit()
+        {
+            if (thread != null)
+            {
+                thread.Abort();
+            }
+        }
+
+        /// <summary>
+        /// 添加任务
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public virtual bool AddUploads(List<PhotoUpload> list)
+        {
+            bool result = uploadController.AddUploads(list);
+            if (result)
+            {
+                EventBus.OnProgressBarMax(null, new ProgressBarMaxEventArgs(list.Count));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 添加任务
+        /// </summary>
+        /// <param name="photoUpload"></param>
+        /// <returns></returns>
+        public bool AddUpload(PhotoUpload photoUpload)
+        {
+            bool result = uploadController.AddUpload(photoUpload);
+            if (result)
+            {
+                EventBus.OnProgressBarMax(null, new ProgressBarMaxEventArgs(1));
+            }
+            return result;
         }
     }
 }

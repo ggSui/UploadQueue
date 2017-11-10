@@ -7,8 +7,8 @@
     <ProjectGuid>{75EFAF6D-33CC-4309-A70A-872040B32E73}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DASM.Client.Upload</RootNamespace>
-    <AssemblyName>DASM.Client.Upload</AssemblyName>
+    <RootNamespace>UploadQueue</RootNamespace>
+    <AssemblyName>UploadQueue</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,13 +43,13 @@
     <Compile Include="Event\ConsoleLogEventArgs.cs" />
     <Compile Include="Event\EventBus.cs" />
     <Compile Include="Event\EventBusCurrent.cs" />
-    <Compile Include="Event\ProgressBarEventArgs.cs" />
+    <Compile Include="Event\ProgressBarMaxEventArgs.cs" />
     <Compile Include="Event\SuccessEventArgs.cs" />
     <Compile Include="Event\UploadSpeedEventArgs.cs" />
-    <Compile Include="Model\PhotoUpload.cs" />
-    <Compile Include="Model\PhotoUploadController.cs" />
+    <Compile Include="PhotoUpload.cs" />
+    <Compile Include="PhotoUploadController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\IService.cs" />
+    <Compile Include="Service\IUploadService.cs" />
     <Compile Include="Service\UploadPhotoHandler.cs" />
     <Compile Include="Service\UploadService.cs" />
     <Compile Include="Service\UploadServiceState.cs" />

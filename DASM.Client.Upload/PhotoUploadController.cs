@@ -1,10 +1,7 @@
-﻿using System;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.Concurrent;
 
-namespace DASM.Client.Upload
+namespace UploadQueue
 {
     /// <summary>
     /// 上传事件队列
@@ -18,11 +15,11 @@ namespace DASM.Client.Upload
         }
 
         /// <summary>
-        /// 添加任务
+        /// 添加任务集合
         /// </summary>
         /// <param name="selection"></param>
         /// <returns></returns>
-        public bool AddUpload(params PhotoUpload[] uploads)
+        public bool AddUploads(List<PhotoUpload> uploads)
         {
             if (uploads != null)
             {
@@ -33,6 +30,19 @@ namespace DASM.Client.Upload
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 添加任务
+        /// </summary>
+        /// <param name="upload"></param>
+        /// <returns></returns>
+        public bool AddUpload(PhotoUpload upload)
+        {
+            if (upload == null) return false;
+
+            mUploadingList.Enqueue(upload);
+            return true;
         }
 
         /// <summary>

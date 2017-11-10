@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DASM.Client.Upload", "DASM.Client.Upload\DASM.Client.Upload.csproj", "{75EFAF6D-33CC-4309-A70A-872040B32E73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadQueue", "DASM.Client.Upload\UploadQueue.csproj", "{75EFAF6D-33CC-4309-A70A-872040B32E73}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProjectUpload", "UnitTestProjectUpload\UnitTestProjectUpload.csproj", "{0DEC1871-17E3-4AFC-8B07-40F3C4868988}"
 EndProject

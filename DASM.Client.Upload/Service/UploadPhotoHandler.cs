@@ -1,10 +1,6 @@
-﻿using DASM.Client.Upload.Event;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using UploadQueue.Event;
 
-namespace DASM.Client.Upload.Service
+namespace UploadQueue.Service
 {
     /// <summary>
     /// 上传图片处理类
